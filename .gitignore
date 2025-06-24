@@ -1,2 +1,2 @@
-./airflow-venv/
-./dags/__pycache__/
+airflow-venv/
+__pycache__/
