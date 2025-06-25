@@ -312,7 +312,7 @@ def send_snowflake_success_notification(context):
 
 def fetch_weather_data(task_instance, **kwargs):
     cities = ["London", "Delhi","Mumbai","Kolkata","Chennai","Bengaluru"]
-    api_key = "af341a72bead1e87df154a73ef0dd69d"
+    api_key = os.getenv("OPEN_WEATHER_API_KEY")
     all_data = []
 
     for city in cities:
