@@ -17,6 +17,11 @@ from airflow.providers.standard.operators.empty import EmptyOperator
 from airflow.utils.email import send_email
 from airflow.models import Variable
 from airflow.utils import timezone
+from dotenv import load_dotenv
+from pathlib import Path
+
+env_path = Path(__file__).resolve().parent.parent / '.env'
+load_dotenv(dotenv_path=env_path)
 
 def send_failure_email(context):
     """Send email notification on task failure"""
@@ -310,9 +315,9 @@ def send_snowflake_success_notification(context):
         html_content=html_content
     )
 
+api_key = os.getenv("OPEN_WEATHER_API_KEY")
 def fetch_weather_data(task_instance, **kwargs):
     cities = ["London", "Delhi","Mumbai","Kolkata","Chennai","Bengaluru"]
-    api_key = os.getenv("OPEN_WEATHER_API_KEY")
     all_data = []
 
     for city in cities:
@@ -347,7 +352,7 @@ with DAG(
     is_weather_api_ready = HttpSensor(
         task_id='is_weather_api_ready',
         http_conn_id='weather_api',
-        endpoint='/data/2.5/weather?q=India,London&appid=af341a72bead1e87df154a73ef0dd69d',
+        endpoint=f'/data/2.5/weather?q=India,London&appid={api_key}',
         timeout=60,
         poke_interval=30,
         mode='poke'
